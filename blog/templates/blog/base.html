@@ -10,6 +10,7 @@
     <body>
         <div class="page-header">
             {% if user.is_authenticated %}
+                <!--#新しいpost_newのviewを呼び出す-->
                 <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             {% endif %}
         <h1><a href="/">Blog</a></h1>
