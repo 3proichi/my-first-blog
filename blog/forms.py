@@ -11,9 +11,9 @@ class PostForm(forms.ModelForm):
         #models.pyで作ったモデルで選ぶ
         model = Post
         #フォームのフィールドに何を置くか
-        fields = ('task','text','deadline','task')
+        fields = ('title','text','deadline')
         widgets = {
             'deadline': forms.NumberInput(attrs={
-                "type": "date"
+                "type": "datetime-local"
             })
         }
