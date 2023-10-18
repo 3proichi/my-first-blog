@@ -47,3 +47,7 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_start(request):
+    start = Post.objects.filter(published_date__lte=timezone.now()).order_by('deadline')
+    return render(request, 'blog/start.html',{'start':start})
