@@ -34,6 +34,72 @@ def post_new(request):
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
+def souziki_post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        
+        #フォーム内のデータが正常であれば
+        #（すべての必須フィールドが設定され、不正な値が送信されないこと）
+        if form.is_valid():
+            #フォームを保存
+            #commit=False は Post モデルをまだ保存しないという意味
+            post = form.save(commit=False)
+            #authorを追加
+            post.author = request.user
+            post.published_date = timezone.now()
+            #作成者を追加しつつフォームの変更を保存
+            post.save()
+            #Post＿detail
+            return redirect('post_detail', pk=post.pk)
+    else:
+        default_data = {'title':"掃除機",'text':"の部屋の掃除機をかける"}
+        form = PostForm(default_data)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+def zyugyou_post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        
+        #フォーム内のデータが正常であれば
+        #（すべての必須フィールドが設定され、不正な値が送信されないこと）
+        if form.is_valid():
+            #フォームを保存
+            #commit=False は Post モデルをまだ保存しないという意味
+            post = form.save(commit=False)
+            #authorを追加
+            post.author = request.user
+            post.published_date = timezone.now()
+            #作成者を追加しつつフォームの変更を保存
+            post.save()
+            #Post＿detail
+            return redirect('post_detail', pk=post.pk)
+    else:
+        default_data = {'text':"授業"}
+        form = PostForm(default_data)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+def baito_post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        
+        #フォーム内のデータが正常であれば
+        #（すべての必須フィールドが設定され、不正な値が送信されないこと）
+        if form.is_valid():
+            #フォームを保存
+            #commit=False は Post モデルをまだ保存しないという意味
+            post = form.save(commit=False)
+            #authorを追加
+            post.author = request.user
+            post.published_date = timezone.now()
+            #作成者を追加しつつフォームの変更を保存
+            post.save()
+            #Post＿detail
+            return redirect('post_detail', pk=post.pk)
+    else:
+        default_data = {'title':"アルバイト",'text':"アルバイト"}
+        form = PostForm(default_data)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":

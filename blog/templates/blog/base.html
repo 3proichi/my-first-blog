@@ -11,7 +11,11 @@
         <div class="page-header">
             {% if user.is_authenticated %}
                 <!--#新しいpost_newのviewを呼び出す-->
-                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-heart-empty"></span></a>
+                <!--<a href="{% url 'souziki_post_new' %}" class="top-menu"><span class="glyphicon glyphicon-heart-empty"></span></a>-->
+                <a href="{% url 'souziki_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/souziki.png' %}"></a>
+                <a href="{% url 'baito_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/baito.png' %}"></a>
+                <a href="{% url 'zyugyou_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/zyugyou.png' %}"></a>
             {% endif %}
             <h1><a href="/">Blog</a></h1>
         </div>
