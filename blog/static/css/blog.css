@@ -42,24 +42,11 @@ button {
     cursor: pointer;
 }
 
-#openModal1 {
-    position: absolute;
-    top: 105%;
-    left: 15%;
-    transform:translate(-50%,-50%);
-}
 
 #openModal {
     position: absolute;
-    top: 17%;
-    left: 84%;
-    transform:translate(-50%,-50%);
-}
-
-#souziki {
-    position: absolute;
-    top: 17%;
-    left: 62%;
+    top: 10.5%;
+    left: 71.5%;
     transform:translate(-50%,-50%);
 }
 
