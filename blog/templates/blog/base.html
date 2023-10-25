@@ -11,13 +11,35 @@
         <div class="page-header">
             {% if user.is_authenticated %}
                 <!--#新しいpost_newのviewを呼び出す-->
-                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-heart-empty"></span></a>
-                <!--<a href="{% url 'souziki_post_new' %}" class="top-menu"><span class="glyphicon glyphicon-heart-empty"></span></a>-->
-                <a href="{% url 'souziki_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/souziki.png' %}"></a>
+                <a href="{% url 'yotei_post_new' %}" id="yotei" class="top-menu"><img width = "50" src = "{% static 'images/yotei.png' %}"></a>
+                <a href="{% url 'kadai_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/kadai.png' %}"></a>
+                <a href="{% url 'souziki_post_new' %}"  id="souziki" class="top-menu"><img width = "50" src = "{% static 'images/souziki.png' %}"></a>
                 <a href="{% url 'baito_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/baito.png' %}"></a>
                 <a href="{% url 'zyugyou_post_new' %}" class="top-menu"><img width = "50" src = "{% static 'images/zyugyou.png' %}"></a>
+
+                <a id="openModal"><img width = "50" src = "{% static 'images/sonota.png' %}"></a>
+
+                <!-- モーダルエリアここから -->
+                <section id="modalArea" class="modalArea">
+                    <div id="modalBg" class="modalBg"></div>
+                    <div class="modalWrapper">
+                        <div class="modalContents">
+                            フォームを入れたい
+                            <!--<a href="{% url 'zyugyou_post_new' %}"></a>-->
+                        </div>
+                        <div id="closeModal" class="closeModal">×</div>
+                    </div>
+                </section>
+                <!-- モーダルエリアここまで -->
+                
+                <!-- ↓body閉じタグ直前でjQueryを読み込む -->
+                <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">showModalDialog("post/list.html")</script>
+                <script src="{% static 'javascript/kari.js' %}"></script>
+        
+
             {% endif %}
-            <h1><a href="/">Blog</a></h1>
+            <!--ブログのところ押したら秘書選択ではなくブログページへ-->
+            <h1><a href="/post?">2023 ／ 10</a></h1>
         </div>
         <div class="content container">
             <div class="row">
