@@ -1,10 +1,17 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 
+#課題・仕事のみ(期限があるもの)表示
 {% block content %}
+    <img src =  '{% static "image/cal.png" %}'  width="700px"><img src =  '{% static "image/boy1.png" %}'  width="300px">
     {% for post in posts %}
         <div class="post">
             <div class="date">
-                締切：{{ post.deadline}}
+                {%if post.deadline > today%}
+                    <div class="safe">締切：{{ post.deadline}}</div>
+                {% else %}
+                    <div class="out">締切：{{ post.deadline}}</div>
+                {% endif %}
             </div>
             <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title}}</a></h2>
             <p>{{ post.text|linebreaksbr }}</p>

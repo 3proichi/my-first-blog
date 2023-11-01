@@ -1,53 +1,19 @@
-  /* モーダルCSS */
-.modalArea {
-    display: none;
-    position: fixed;
-    z-index: 10; /*サイトによってここの数値は調整 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/*全て共通：hideエリアをはじめは非表示*/
+.hide-area{
+	display: none;
 }
 
-.modalBg {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(30,30,30,0.9);
+/*全て共通：モーダルのボタンの色を変更したい場合*/
+.modaal-close:after, 
+.modaal-close:before{
+	background:#ccc;	
 }
 
-.modalWrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform:translate(-50%,-50%);
-    width: 70%;
-    max-width: 500px;
-    padding: 10px 30px;
-    background-color: #fff;
-}
-
-.closeModal {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    cursor: pointer;
-}
-    
-  /* 以下ボタンスタイル */
-button {
-    padding: 9px;
-    background-color: #fff;
-    border: 1px solid #282828;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-
-#openModal {
-    position: absolute;
-    top: 10.5%;
-    left: 71.5%;
-    transform:translate(-50%,-50%);
+.modaal-close:focus:after,
+.modaal-close:focus:before,
+.modaal-close:hover:after,
+.modaal-close:hover:before{
+	background:#666;
 }
 
 .page-header {
@@ -72,6 +38,14 @@ h1, h2, h3, h4 {
 
 .date {
     color: #828282;
+}
+
+.safe {
+    color: #57bac9;
+}
+
+.out {
+    color: #eb4e63;
 }
 
 .save {

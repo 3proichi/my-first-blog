@@ -128,3 +128,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
