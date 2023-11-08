@@ -4,26 +4,31 @@
         <title>Blog</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&display=swap" rel="stylesheet">
         <!--css-->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     </head>
     <body>
         <div class="page-header">
+            <a href="{% url 'admin:login' %}"><img width = "120" src = "{% static 'images/admin.png' %}"></a>    
             {% if user.is_authenticated %}
                 <!--#新しいpost_newのviewを呼び出す-->
-                <a href="http://127.0.0.1:8000/admin/"><img width = "120" src = "{% static 'images/admin.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/zyugyounew/" class="iframe-open"><img width = "50" src = "{% static 'images/zyugyou.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/yoteinew/" class="iframe-open"><img width = "50" src = "{% static 'images/yotei.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/kadainew/" class="iframe-open"><img width = "50" src = "{% static 'images/kadai.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/souzikinew/" class="iframe-open"><img width = "50" src = "{% static 'images/souziki.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/baitonew/" class="iframe-open"><img width = "50" src = "{% static 'images/baito.png' %}"></a>
-                <a href="http://127.0.0.1:8000/post/kazinew/" class="iframe-open"><img width = "50" src = "{% static 'images/kazi.png' %}"></a>
+                <img width = "50" src = "{% static 'images/bou.png' %}">
+                <a href="{% url 'yotei_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/yotei.png' %}"></a>
+                <a href="{% url 'zyugyou_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/zyugyou.png' %}"></a>
+                <a href="{% url 'baito_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/baito.png' %}"></a> 
+                <img width = "50" src = "{% static 'images/bou.png' %}">
+                <a href="{% url 'kadai_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/kadai.png' %}"></a>
+                <a href="{% url 'kazi_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/kazi.png' %}"></a>
+                <a href="{% url 'souziki_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/souziki.png' %}"></a>
+                <a href="{% url 'sentaku_post_new' %}" class="iframe-open"><img width = "50" src = "{% static 'images/sentaku.png' %}"></a>
 
             {% endif %}
             <!--ブログのところ押したら秘書選択ではなくブログページへ-->
-            <h1><a href="/post">2023 ／ 11</a></h1>
+            <h1><a href="/post">2023 / 11</a></h1>
         </div>
         <div class="content container">
             <div class="row">

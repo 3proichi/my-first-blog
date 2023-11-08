@@ -3,18 +3,19 @@
 
 #課題・仕事のみ(期限があるもの)表示
 {% block content %}
-    <img src =  '{% static "image/cal.png" %}'  width="700px"><img src =  '{% static "image/boy1.png" %}'  width="300px">
+    <img src =  '{% static "images/cale11.png" %}'  width="650px">
+    <img src =  '{% static "image/boy1.png" %}'  width="300px">
+
     {% for post in posts %}
         <div class="post">
             <div class="date">
                 {%if post.deadline > today%}
-                    <div class="safe">締切：{{ post.deadline}}</div>
+                    <div class="safe">締め切り：{{ post.deadline}}</div>
                 {% else %}
-                    <div class="out">締切：{{ post.deadline}}</div>
+                    <div class="out">締め切り：{{ post.deadline}}</div>
                 {% endif %}
             </div>
-            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title}}</a></h2>
-            <p>{{ post.text|linebreaksbr }}</p>
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title}}</a></h2><p>{{ post.text|linebreaksbr }}</p>
         </div>
     {% endfor %}
 {% endblock %}
