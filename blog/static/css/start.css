@@ -1,12 +1,39 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+1p');
+
+
 h1{
     padding-left: 25px;
     text-align: center;
-    color: #4a514e;
-    font-size: 30px; 
+    color: #333a37;
+    font-family: 'Corben', cursive;
+    font-size: 60px; 
     background: linear-gradient(transparent 60%, #83bea6 60%)
 }
 
 div{
     text-align: center;
 }
+
+h3{
+    font-size: 40px;
+    padding-left: 25px;
+    text-align: center;
+    font-family:'M PLUS 1p', sans-serif;
+}
+
+.scale-img{
+    transition-duration: 0.5s; /*変化の時間*/
+}
+
+.scale-img:hover {
+    transform: scale(1.5); /*画像の拡大*/
+    /*cursor: pointer; /*カーソルをポインターにする*/
+}
+
+ .scale-box {
+        width: 250px; /*ボックスの幅*/
+        height: 175px; /*ボックスの高さ*/
+        overflow: hidden; /*画像拡大時にはみ出た部分を隠す*/
+ }
