@@ -5,12 +5,16 @@ from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
 from .forms import ScheduleForm
 from django.shortcuts import redirect
+import math
 
 # Create your views here.
 def post_list(request):
     posts = Post.objects.filter(deadline__isnull=False).order_by('deadline')
-    today = timezone.now()
-    context={'posts':posts,'today':today}
+    posts2 = Post.objects.filter(published_date__lte=timezone.now()).order_by('start_data')
+    now = timezone.localtime(timezone.now())
+    today_start = now-timezone.timedelta(hours=now.hour,minutes=now.minute,seconds=now.second,microseconds=now.microsecond)
+    today_finish =  timezone.localtime(today_start)+timezone.timedelta(hours=23,minutes=59)
+    context={'posts':posts,'today':now,'posts2':posts2,'today_s':today_start,'today_f':today_finish}
     return render(request, 'blog/post_list.html', context)
 
 def post_detail(request, pk):
@@ -29,44 +33,64 @@ def post_new(request):
             #authorを追加
             post.author = request.user
             post.published_date = timezone.now()
+            post.save()
+            print(post.deadline)
+            now = timezone.localtime(timezone.now())
             
             #締め切りまでの日数計算
-            limit = post.deadline - post.published_date
+            limit = timezone.localtime(post.deadline) - now
+            finish = False
             #締切の日数分ループ
-            for day in range(limit.days):
+            for l in range(0,limit.days):
                 #探す日
-                searchday = post.published_date+timezone.timedelta(days=day,hours=-post.published_date.hour-9,minutes=-post.published_date.minute,seconds=-post.published_date.second,microseconds=-post.published_date.microsecond)
-                posts = Post.objects.filter(start_data__date=searchday.date())
-
-                zikan = [False] * 24  # 24要素すべてをFalseで初期化
-
-                for post1 in posts:
-                    s = post1.start_data
-                    hour = s.hour
-                    zikan[hour] = True
-                
-                num = 0
-                min = post.spendtime*60;
-                if post.spendtime < 1.0:
-                    for index in range(0,len(zikan)-1):
-                        if not zikan[index]:
-                            post.start_data = searchday + timezone.timedelta(hours=index)
-                            post.finish_data = post.start_data + timezone.timedelta(minutes=min)
-                            break
+                if finish:
+                    break
                 else:
-                    for index in range(0,len(zikan)-1):
-                        if not zikan[index]:
-                            num += 1
-                            if num >= post.spendtime:
-                                if num ==1:
-                                    post.start_data = searchday + timezone.timedelta(hours=(index))
-                                    post.finish_data = post.start_data + timezone.timedelta(minutes=min)
-                                else:
-                                    post.start_data = searchday + timezone.timedelta(hours=(index - (num-1)))
-                                    post.finish_data = post.start_data + timezone.timedelta(minutes=min)
+                    searchday = now - timezone.timedelta(days=-l,hours=now.hour,minutes=now.minute,seconds=now.second,microseconds=now.microsecond)
+                    posts = Post.objects.filter(start_data__date=searchday.date())
+
+                    zikan = [False] * 24  # 24要素すべてをFalseで初期化
+                    zikan[0]=True  # 24要素すべてをFalseで初期化
+                    zikan[1]=True  # 24要素すべてをFalseで初期化
+                    zikan[2]=True  # 24要素すべてをFalseで初期化
+                    zikan[3]=True  # 24要素すべてをFalseで初期化
+                    zikan[4]=True  # 24要素すべてをFalseで初期化
+                    zikan[5]=True  # 24要素すべてをFalseで初期化
+                    zikan[6]=True  # 24要素すべてをFalseで初期化
+                    zikan[7]=True  # 24要素すべてをFalseで初期化
+                    zikan[8]=True  # 24要素すべてをFalseで初期化
+                    zikan[22]=True  # 24要素すべてをFalseで初期化
+                    zikan[23]=True  # 24要素すべてをFalseで初期化
+
+
+                    for post1 in posts:
+                        s = timezone.localtime(post1.start_data)
+                        f = timezone.localtime(post1.finish_data)
+                        hours = (f-s).seconds/3600
+                        for i in range(0,math.ceil(hours)):
+                            zikan[i+s.hour] = True
+                    
+                    num = 0
+                    min = 0
+                    min = post.spendtime*60
+                    if post.spendtime < 1:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                post.start_data = searchday + timezone.timedelta(hours=index)
+                                post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                finish = True
                                 break
-                        else:
-                            num = 0
+                    else:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                num += 1
+                                if num >= post.spendtime:
+                                    post.start_data = searchday + timezone.timedelta(hours=(index - (num-1)))
+                                    post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                    finish = True
+                                    break
+                            else:
+                                num = 0
 
 
             #作成者を追加しつつフォームの変更を保存
@@ -90,6 +114,62 @@ def souziki_post_new(request):
             #authorを追加
             post.author = request.user
             post.published_date = timezone.now()
+
+            now = timezone.localtime(timezone.now())
+            #締め切りまでの日数計算
+            limit = timezone.localtime(post.deadline) - now
+            finish = False
+            #締切の日数分ループ
+            for l in range(0,limit.days):
+                #探す日
+                if finish:
+                    break
+                else:
+                    searchday = now - timezone.timedelta(days=-l,hours=now.hour,minutes=now.minute,seconds=now.second,microseconds=now.microsecond)
+                    posts = Post.objects.filter(start_data__date=searchday.date())
+
+                    zikan = [False] * 24  # 24要素すべてをFalseで初期化
+                    zikan[0]=True  # 24要素すべてをFalseで初期化
+                    zikan[1]=True  # 24要素すべてをFalseで初期化
+                    zikan[2]=True  # 24要素すべてをFalseで初期化
+                    zikan[3]=True  # 24要素すべてをFalseで初期化
+                    zikan[4]=True  # 24要素すべてをFalseで初期化
+                    zikan[5]=True  # 24要素すべてをFalseで初期化
+                    zikan[6]=True  # 24要素すべてをFalseで初期化
+                    zikan[7]=True  # 24要素すべてをFalseで初期化
+                    zikan[8]=True  # 24要素すべてをFalseで初期化
+                    zikan[22]=True  # 24要素すべてをFalseで初期化
+                    zikan[23]=True  # 24要素すべてをFalseで初期化
+
+
+                    for post1 in posts:
+                        s = timezone.localtime(post1.start_data)
+                        f = timezone.localtime(post1.finish_data)
+                        hours = (f-s).seconds/3600
+                        for i in range(0,math.ceil(hours)):
+                            zikan[i+s.hour] = True
+                    
+                    num = 0
+                    min = 0
+                    min = post.spendtime*60
+                    if post.spendtime < 1:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                post.start_data = searchday + timezone.timedelta(hours=index)
+                                post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                finish = True
+                                break
+                    else:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                num += 1
+                                if num >= post.spendtime:
+                                    post.start_data = searchday + timezone.timedelta(hours=(index - (num-1)))
+                                    post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                    finish = True
+                                    break
+                            else:
+                                num = 0
             #作成者を追加しつつフォームの変更を保存
             post.save()
             #Post＿detail
@@ -112,6 +192,62 @@ def sentaku_post_new(request):
             #authorを追加
             post.author = request.user
             post.published_date = timezone.now()
+
+            now = timezone.localtime(timezone.now())
+            #締め切りまでの日数計算
+            limit = timezone.localtime(post.deadline) - now
+            finish = False
+            #締切の日数分ループ
+            for l in range(0,limit.days):
+                #探す日
+                if finish:
+                    break
+                else:
+                    searchday = now - timezone.timedelta(days=-l,hours=now.hour,minutes=now.minute,seconds=now.second,microseconds=now.microsecond)
+                    posts = Post.objects.filter(start_data__date=searchday.date())
+
+                    zikan = [False] * 24  # 24要素すべてをFalseで初期化
+                    zikan[0]=True  # 24要素すべてをFalseで初期化
+                    zikan[1]=True  # 24要素すべてをFalseで初期化
+                    zikan[2]=True  # 24要素すべてをFalseで初期化
+                    zikan[3]=True  # 24要素すべてをFalseで初期化
+                    zikan[4]=True  # 24要素すべてをFalseで初期化
+                    zikan[5]=True  # 24要素すべてをFalseで初期化
+                    zikan[6]=True  # 24要素すべてをFalseで初期化
+                    zikan[7]=True  # 24要素すべてをFalseで初期化
+                    zikan[8]=True  # 24要素すべてをFalseで初期化
+                    zikan[22]=True  # 24要素すべてをFalseで初期化
+                    zikan[23]=True  # 24要素すべてをFalseで初期化
+
+
+                    for post1 in posts:
+                        s = timezone.localtime(post1.start_data)
+                        f = timezone.localtime(post1.finish_data)
+                        hours = (f-s).seconds/3600
+                        for i in range(0,math.ceil(hours)):
+                            zikan[i+s.hour] = True
+                    
+                    num = 0
+                    min = 0
+                    min = post.spendtime*60
+                    if post.spendtime < 1:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                post.start_data = searchday + timezone.timedelta(hours=index)
+                                post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                finish = True
+                                break
+                    else:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                num += 1
+                                if num >= post.spendtime:
+                                    post.start_data = searchday + timezone.timedelta(hours=(index - (num-1)))
+                                    post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                    finish = True
+                                    break
+                            else:
+                                num = 0
             #作成者を追加しつつフォームの変更を保存
             post.save()
             #Post＿detail
@@ -178,6 +314,62 @@ def kazi_post_new(request):
             #authorを追加
             post.author = request.user
             post.published_date = timezone.now()
+
+            now = timezone.localtime(timezone.now())
+            #締め切りまでの日数計算
+            limit = timezone.localtime(post.deadline) - now
+            finish = False
+            #締切の日数分ループ
+            for l in range(0,limit.days):
+                #探す日
+                if finish:
+                    break
+                else:
+                    searchday = now - timezone.timedelta(days=-l,hours=now.hour,minutes=now.minute,seconds=now.second,microseconds=now.microsecond)
+                    posts = Post.objects.filter(start_data__date=searchday.date())
+
+                    zikan = [False] * 24  # 24要素すべてをFalseで初期化
+                    zikan[0]=True  # 24要素すべてをFalseで初期化
+                    zikan[1]=True  # 24要素すべてをFalseで初期化
+                    zikan[2]=True  # 24要素すべてをFalseで初期化
+                    zikan[3]=True  # 24要素すべてをFalseで初期化
+                    zikan[4]=True  # 24要素すべてをFalseで初期化
+                    zikan[5]=True  # 24要素すべてをFalseで初期化
+                    zikan[6]=True  # 24要素すべてをFalseで初期化
+                    zikan[7]=True  # 24要素すべてをFalseで初期化
+                    zikan[8]=True  # 24要素すべてをFalseで初期化
+                    zikan[22]=True  # 24要素すべてをFalseで初期化
+                    zikan[23]=True  # 24要素すべてをFalseで初期化
+
+
+                    for post1 in posts:
+                        s = timezone.localtime(post1.start_data)
+                        f = timezone.localtime(post1.finish_data)
+                        hours = (f-s).seconds/3600
+                        for i in range(0,math.ceil(hours)):
+                            zikan[i+s.hour] = True
+                    
+                    num = 0
+                    min = 0
+                    min = post.spendtime*60
+                    if post.spendtime < 1:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                post.start_data = searchday + timezone.timedelta(hours=index)
+                                post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                finish = True
+                                break
+                    else:
+                        for index in range(0,len(zikan)-1):
+                            if zikan[index] == False:
+                                num += 1
+                                if num >= post.spendtime:
+                                    post.start_data = searchday + timezone.timedelta(hours=(index - (num-1)))
+                                    post.finish_data = timezone.localtime(post.start_data) + timezone.timedelta(minutes=min)
+                                    finish = True
+                                    break
+                            else:
+                                num = 0
             #作成者を追加しつつフォームの変更を保存
             post.save()
             #Post＿detail

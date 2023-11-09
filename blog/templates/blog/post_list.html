@@ -1,7 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-#課題・仕事のみ(期限があるもの)表示
 {% block content %}
 <div class = "coment">
     <img src =  '{% static "images/cale11.png" %}'  width="650px">
@@ -9,8 +8,9 @@
     <img src =  '{% static "image/k4.png" %}'  width="300px">
 </div>
 
+    <h3>タスク一覧</h3>
     {% for post in posts %}
-        <div class="post">
+        <div class="post2">
             <div class="date">
                 {%if post.deadline > today%}
                     <div class="safe">締め切り：{{ post.deadline}}</div>
@@ -21,4 +21,16 @@
             <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title}}</a></h2><p>{{ post.text|linebreaksbr }}</p>
         </div>
     {% endfor %}
+    <h3>今日の予定</h3>
+    {% for post2 in posts2 %}
+        <div class="post1">
+            <div class="date">
+                {%if post2.start_data < today_f%}
+                    <h2><a href="{% url 'post_detail' pk=post2.pk %}">{{ post2.title}}</a></h2><p>{{ post2.text|linebreaksbr }}</p>
+                    <p>{{ post2.start_data}}~{{ post2.finish_data}}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
 {% endblock %}

@@ -77,3 +77,25 @@ h1, h2, h3, h4 {
 .coment{
     text-align: center;
 }
+
+.post1 {
+    margin-bottom: 30px;
+    background-color: #ffd0d0;
+    font-family: 'Zen Maru Gothic', serif;
+}
+
+.post1 h2 a, .post1 h2 a:visited {
+    color: #000000;
+    font-family: 'Zen Maru Gothic', serif;
+}
+
+.post2 {
+    margin-bottom: 30px;
+    background-color: #f2ffd0;
+    font-family: 'Zen Maru Gothic', serif;
+}
+
+.post2 h2 a, .post2 h2 a:visited {
+    color: #000000;
+    font-family: 'Zen Maru Gothic', serif;
+}
