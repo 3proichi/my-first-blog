@@ -26,7 +26,7 @@
         <div class="post1">
             <div class="date">
                 {%if post2.start_data < today_f %}
-                    {%if post2.start_data > today_s %}
+                    {%if today_s < post2.start_data %}
                         <h2><a href="{% url 'post_detail' pk=post2.pk %}">{{ post2.title}}</a></h2><p>{{ post2.text|linebreaksbr }}</p>
                         <p>{{ post2.start_data}}~{{ post2.finish_data}}</p>
                     {% endif %}
